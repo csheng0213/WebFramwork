@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><%= title %></title>
+    <link href="css/loginstyle.css" rel='stylesheet' type='text/css'/>
+    <link href="css/button.css" rel="stylesheet" type="text/css">
+    <link href="layer/need/layer.css" rel="stylesheet" type="text/css">
+
+    <style>
+        .reg td {
+            height: 40px;
+            text-align: right;
+        }
+
+        .reg th {
+            height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1>测试版本1.1</br>测试用户名:123@123.com&nbsp;测试密码：123</h1>
+<div class="app-location">
+    <h2>Welcome to My Blog</h2>
+    <div class="line"><span></span></div>
+    <div class="location"><img src="images/location.png" class="img-responsive" alt=""/></div>
+    <form method="post">
+        <input type="text" class="text" name="name" value="E-mail address" onfocus="this.value = '';"
+               onblur="if (this.value == '') {this.value = 'E-mail address';}">
+        <input type="password" name="password" value="Password" onfocus="this.value = '';"
+               onblur="if (this.value == '') {this.value = 'Password';}">
+        <div class="submit"><input type="submit" onclick="myFunction()" value="Sign in"></div>
+        <div class="clear"></div>
+        <div class="new">
+            <h3><a href="#">忘记密码？</a></h3>
+            <h4><a id="registerDiglog">注册</a>
+            </h4>
+            <div class="clear"></div>
+        </div>
+    </form>
+</div>
+<!--start-copyright-->
+<div class="copy-right">
+    <p>Made by sweety in December 2015<a target="_blank" href="http://www.keepforward.xyz:3000">
+        网站首页</a></p>
+</div>
+<!--//end-copyright-->
+
+</body>
+<script src="js/silder.js"></script>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="http://apps.bdimg.com/libs/layer/2.1/layer.js"></script>
+<!--<script src="js/modernizr.js"></script>-->
+<script>
+    $(document).ready(function () {
+        layer.open({
+            content: '<div style="text-align: left"> 版本号：v1.1</br>' +
+            '更新说明：</br>' +
+            '1、编写python脚本，爬取CNode社区我的帐号下的文章，周期为每天爬取一次。</br>' +
+            '2、爬取的文章动态加载到博客中，实现动态更新。</br>' +
+            '3、python版本为2.7，脚本文件为cnodeTest.py，启动文件为sphinxRun.bat。</br>' +
+            '4、资源加载部分更换为cdn加速。</br>' +
+            '开放功能：登录、注册、添加好友印象、文章爬取、文章动态更新...</div>',
+            btn: ['OK']
+        });
+    });
+    $('#registerDiglog').on('click', function () {
+        var html = '<from method="post">' +
+                '<table class="reg" style="text-align: right">' +
+                '<tr>' +
+                '<td>请填写注册的账号：</td>' +
+                '<td><input type="text" class="text" id="regName"></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>请填写注册的密码：</td>' +
+                '<td><input type="text" id="regPassword" ></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>请再次填写密码：</td>' +
+                '<td><input type="text" id="regPassword2" ></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td></td>' +
+                '<td><a class="button blue big" onclick="add()">注册</a></td>' +
+                '</tr>' +
+                '</table>' +
+                '</form>'
+        layer.open({
+            content: html,
+            btn: ['OK']
+        });
+    });
+    function add() {
+        var url = '/peopel/getPeopleList';
+        var name = $("#regName").val();
+        var password = $("#regPassword").val();
+        var rePassword = $("#regPassword2").val();
+        if (password !== rePassword) {
+            alert("两次输入密码不一致！");
+            return;
+        }
+        var query = {
+            name: name,
+            password: password
+        };
+        $.getJSON(url, query, function (data) {
+
+            alert( data.toString());
+            if (data == true) {
+                layer.closeAll();
+                alert("注册成功！");
+                return;
+            } else {
+                alert("该用户名已经被注册！");
+                return;
+            }
+        })
+    }
+</script>
+</html>

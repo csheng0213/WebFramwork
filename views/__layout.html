@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/about.css" rel="stylesheet">
+    <link href="css/media.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/button.css" rel="stylesheet" type="text/css">
+    <link href="layer/need/layer.css" rel="stylesheet" type="text/css">
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://apps.bdimg.com/libs/layer/2.1/layer.js"></script>
+    <style>
+        .reg td {
+            height: 40px;
+            text-align: right;
+        }
+
+        .reg th {
+            height: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="ibody">
+    <header>
+        <h1>不忘初心方得始终</h1>
+        <h2>无论度过怎样的岁月,若能坚持当下,不忘初衷,定能一如既往,保持前进.我毫无疑问的这样坚信着!</h2>
+        <div class="logo"><a href="/main"></a></div>
+        <nav id="topnav"><a href="/main">首页</a><a href="/myself">关于我</a><a
+                href="/technology">分享技术</a></nav>
+    </header>
+
+    <%- body %>
+
+    <aside>
+        <div class="avatar"><a href="/myself"><span>关于小磊</span></a></div>
+        <div class="topspaceinfo">
+            <h1>小磊</h1>
+            <div><p id="impression"></p></div>
+            <div style="max-height: 20px;width: 100%">
+                <div style="float: right"><a class="button blue big" onclick="addImpression()">增加</a></div>
+            </div>
+        </div>
+        <div class="about_c">
+            <p>网名：ShadowFiend | 影魔</p>
+            <p>职业：码畜、码农、IT民工</p>
+            <p>籍贯：河北省―唐山市</p>
+            <p>电话：177****3020</p>
+            <p>邮箱：196**7298@qq.com</p>
+        </div>
+        <div class="bdsharebuttonbox" style="background-color: white">
+            <a href="#" style="margin-left: 20px" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+            <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+            <a href="#" class="bds_renren" href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+            <a href="#" class="bds_more" data-cmd="more"></a>
+        </div>
+        <div class="tj_news">
+            <h2>
+                <p class="tj_t1">功能未开发</p>
+            </h2>
+            <br>
+            <h2>
+                <p class="tj_t1">最新文章</p>
+            </h2>
+            <ul id="new">
+
+            </ul>
+            <h2>
+                <p class="tj_t2">推荐文章</p>
+            </h2>
+            <ul id="tjwz">
+
+            </ul>
+        </div>
+        <div class="links">
+            <h2>
+                <p>友情链接</p>
+            </h2>
+            <ul>
+                <li><a href="/">个人博客</a></li>
+                <li><a href="/">技术社区</a></li>
+            </ul>
+        </div>
+        <div class="copyright">
+            <ul>
+                <p> Design by <a href="/">DanceSmile</a></p>
+                <p>蜀ICP备11002373号-1</p>
+                </p>
+            </ul>
+        </div>
+    </aside>
+    <div class="clear"></div>
+    <!-- 清除浮动 -->
+</div>
+</body>
+
+<script>
+    //$(document).ready(function(){
+    //    $(".childWindow").hide();
+    //    impressionInit();
+    //});
+    $(window).load(function () {
+        $(".childWindow").hide();
+        impressionInit();
+        getArticles();
+    });
+    function impressionInit() {
+        var url = "/layout/getImpression";
+        var separator = " | ";
+        var string = "";
+        $.getJSON(url, function (data) {
+            QuickSort(data, 0, data.length - 1);
+            for (var i = 0; i < data.length; i++) {
+                string += data[i] + separator;
+            }
+            $("#impression").text(string);
+        })
+    }
+    function addImpression() {
+        var html = '<from method="post">' +
+                '<table class="reg">' +
+                '<tr>' +
+                '<td>请填写您的印象：</td>' +
+                '<td><input type="text" class="text" id="tmpImpression"></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td>请填写您的名字：</td>' +
+                '<td><input type="text" id="tmpName" ></td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td></td>' +
+                '<td><a class="button blue big" onclick="add()">添加</a></td>' +
+                '</tr>' +
+                '</table>' +
+                '</form>'
+        layer.open({
+            content: html,
+            btn: ['OK']
+        });
+    }
+    function add() {
+        var url = '/layout/addImoression';
+        var tmpImpression = $("#tmpImpression").val();
+        var tmpName = $("#tmpName").val();
+        if (tmpImpression == '') {
+            alert("请输入您的印象！");
+            return;
+        }
+        if (tmpName == '') {
+            alert("请输入您的大名！");
+            return;
+        }
+        var query = {
+            impression: tmpImpression,
+            author: tmpName
+        };
+        $.getJSON(url, query, function (data) {
+            if (data == true) {
+                layer.closeAll();
+                impressionInit();
+            } else {
+                alert("该好友印象已经有人添加！");
+                return;
+            }
+        })
+    }
+    function QuickSort(array, low, high) {
+        if (low >= high) {
+            return;
+        }
+        var i = low;
+        var j = high;
+        var tmpStr = array[i];
+        while (i < j) {
+            while (i < j && array[j] >= tmpStr) {
+                j--;
+            }
+            if (i < j) {
+                array[i++] = array[j];
+            }
+            while (i < j && array[i] <= tmpStr) {
+                i++;
+            }
+            if (i < j) {
+                array[j--] = array[i];
+            }
+        }
+        array[i] = tmpStr;
+        QuickSort(array, low, i - 1);
+        QuickSort(array, i + 1, high);
+    }
+    function getArticles() {
+        var url = '/main/addArticle';
+        var html = '<h2><p><span>推荐</span>文章</p></h2>';
+        $.getJSON(url, function (data) {
+            var len = data.length;
+            var num = len > 8 ? 8 : len;
+            for (var i = 0; i < num; i++) {
+                var title = data[i].title;
+                html += '<li><a href="/article?title=' + title + '">' + title + '</a></li>';
+            }
+            $("#tjwz,#new").html(html);
+        });
+    }
+</script>
+</html>

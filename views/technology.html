@@ -1,0 +1,35 @@
+<article>
+    <h2 class="about_h">您现在的位置是：<a href="/">首页</a>>分享技术</h2>
+    <div class="bloglist"></div>
+</article>
+
+<script>
+    $(document).ready(function () {
+        getArticle();
+    });
+
+    function getArticle() {
+        var url = '/main/addArticle';
+        var html = '<h2><p><span>推荐</span>文章</p></h2>';
+        $.getJSON(url, function (data) {
+            var len = data.length;
+            for (var i = 0; i < len; i++) {
+                var title = data[i].title;
+                var abstract = data[i].abstract;
+                var text = data[i].text;
+                var time = data[i].time;
+                html += '<div class="blogs">' +
+                        '<h3><a href="/article?title=' + title + '">' + title + '</a></h3>' +
+                        '<figure><img src="images/newyear.jpg"></figure>' +
+                        '<ul>' +
+                        '<p>' + abstract + '</p>' +
+                        '<a href="/article?title=' + title + '" target="_blank" class="readmore">阅读全文&gt;&gt;</a>' +
+                        '</ul>' +
+                        '<p class="autor"><span>作者：<a href="/myself">Sweety</a></span><span>  </span><span>分类：【技术】</span></p>' +
+                        '<div class="dateview">' + time + '</div>' +
+                        '</div>';
+            }
+            $(".bloglist").html(html);
+        });
+    }
+</script>
