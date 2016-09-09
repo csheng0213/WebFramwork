@@ -5,8 +5,9 @@ function Peopel()
 }
 
 
-Peopel.prototype.getPeopleList = function *(next)
+Peopel.prototype.post_getPeopleList = function *(next)
 {
+	var body = this.request.body
 	var infos = yield Info.getInfos();
 	this.body = JSON.stringify(infos);
 }

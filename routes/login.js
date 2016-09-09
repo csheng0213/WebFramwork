@@ -3,8 +3,8 @@
  */
 
 var User = require('../modules/user');
-function Login() {
 
+function Login() {
 }
 
 Login.prototype.addUser = function *(next) {

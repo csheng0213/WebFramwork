@@ -103,18 +103,27 @@
             name: name,
             password: password
         };
-        $.getJSON(url, query, function (data) {
 
-            alert( data.toString());
-            if (data == true) {
-                layer.closeAll();
-                alert("注册成功！");
-                return;
-            } else {
-                alert("该用户名已经被注册！");
-                return;
-            }
-        })
+        // $.getJSON(url, query, function (data) {
+
+        //     alert( data.toString());
+        //     if (data == true) {
+        //         layer.closeAll();
+        //         alert("注册成功！");
+        //         return;
+        //     } else {
+        //         alert("该用户名已经被注册！");
+        //         return;
+        //     }
+        // })
+        $.post(url,
+          {
+           name:"sdf",
+           age:123
+          },
+          function(data,status){
+           alert("Data: " + data + "\nStatus: " + status);
+          });
     }
 </script>
 </html>

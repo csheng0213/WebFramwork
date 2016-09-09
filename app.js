@@ -11,6 +11,7 @@ var controller = require('./routes/controller.js')
 var routers = require('./routes');
 var onerror = require('koa-onerror');
 var session = require('koa-session');
+var bodyParser = require('koa-bodyparser');//解析请求参数
 var gzip = require('koa-gzip');
 var app = koa();
 app.keys = ['some secret hurr'];
@@ -32,6 +33,7 @@ if ('development' === app.env) {
 onerror(app);
 
 app
+    .use(bodyParser())
     .use(gzip())
     .use(session(app))
     .use(serve(__dirname + '/public'))
